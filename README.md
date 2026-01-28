@@ -1,33 +1,41 @@
-# download_s3_files.py — README
+# 📥 download_s3_files.py
 
-Overview
-- Small utility to bulk-download objects from an S3 bucket into a local folder.
-- `download_s3_files.py` automatically loads configuration from a `.env` file (via python-dotenv).
+> A lightweight utility to bulk-download objects from an AWS S3 bucket into a local folder
 
-Prerequisites
-- Python 3.8+ (or your project's required Python)
-- A virtual environment for isolation (recommended)
-- AWS credentials with permission to list and get objects from the target bucket
+---
 
-Quick setup
-1. Create and activate a virtualenv (optional but recommended):
+## ✨ Overview
+
+- **Automated S3 Downloads** — Efficiently bulk-download objects from an S3 bucket
+- **Environment Configuration** — Loads settings from a `.env` file using python-dotenv
+- **Simple & Secure** — Minimal setup with clear credential management
+
+## 📋 Prerequisites
+
+- **Python 3.8+** (or your project's required version)
+- **Virtual environment** (recommended for isolation)
+- **AWS credentials** with `s3:ListBucket` and `s3:GetObject` permissions for your target bucket
+
+## 🚀 Quick Start
+
+### 1️⃣ Setup Virtual Environment
 
 ```bash
 python -m venv .venv
-source .venv/bin/activate
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 ```
 
-2. Install dependencies:
+### 2️⃣ Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-Configuration
-- Create a `.env` file in the project root (the script already includes an example `.env`).
-- Required keys (example, do NOT commit real secrets):
+### 3️⃣ Configure Environment
 
-```
+Create a `.env` file in the project root with your AWS credentials:
+
+```env
 BUCKET_NAME="your-bucket-name"
 S3_PREFIX="optional/prefix/"
 LOCAL_DIRECTORY="/path/to/downloaded_files"
@@ -36,29 +44,48 @@ AWS_ACCESS_KEY_ID="<your-access-key>"
 AWS_SECRET_ACCESS_KEY="<your-secret-key>"
 ```
 
-Notes:
-- The script will call `load_dotenv()` at startup, so environment variables from `.env` are used automatically.
-- Alternatively, you can provide credentials via `~/.aws/credentials` or environment variables set in the shell.
+> **Note:** The script automatically loads environment variables from `.env` at startup.
 
-Run
-- With the virtualenv activated and a `.env` file present:
+### 4️⃣ Run the Script
 
 ```bash
 python download_s3_files.py
 ```
 
-- Or run with inline environment variables (example):
-
+**Alternative:** Provide credentials inline:
 ```bash
 AWS_ACCESS_KEY_ID=... AWS_SECRET_ACCESS_KEY=... BUCKET_NAME=... python download_s3_files.py
 ```
 
-Security
-- Do NOT commit `.env` with secrets. Add `.env` to `.gitignore`.
-- Consider using IAM roles or the AWS CLI credential store for safer credential management.
+## 🔐 Security Best Practices
 
-Troubleshooting
-- "Unable to locate credentials": verify `AWS_ACCESS_KEY_ID`/`AWS_SECRET_ACCESS_KEY` are set or that `~/.aws/credentials` exists.
-- Permission errors: ensure the IAM user/role has `s3:ListBucket` and `s3:GetObject` for the target bucket/prefix.
+⚠️ **Important:**
+- **Never commit** `.env` with real secrets — add it to `.gitignore`
+- Use **AWS IAM roles** or the **AWS CLI credential store** for production
+- Ensure your IAM user/role has appropriate S3 permissions
 
-If you'd like, I can also add a `.gitignore` entry or a small safety check in the script to avoid overwriting files.
+```gitignore
+# Add to .gitignore
+.env
+.env.local
+__pycache__/
+.venv/
+```
+
+## 🐛 Troubleshooting
+
+| Issue | Solution |
+|-------|----------|
+| ❌ "Unable to locate credentials" | Verify `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` are set, or check `~/.aws/credentials` |
+| ❌ Permission errors | Ensure IAM user/role has `s3:ListBucket` and `s3:GetObject` permissions |
+| ❌ Files not found | Check `S3_PREFIX` and `BUCKET_NAME` configuration |
+
+## 💡 Additional Notes
+
+- Supports **alternative credential sources**: `~/.aws/credentials` or shell environment variables
+- **Automatic directory creation**: Creates `LOCAL_DIRECTORY` if it doesn't exist
+- Consider adding a safety check to avoid overwriting existing files if needed
+
+---
+
+**Happy downloading!** 🎉
